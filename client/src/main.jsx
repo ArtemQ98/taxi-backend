@@ -606,6 +606,11 @@ function DriverDashboard({ user, onLogout, onBack }) {
             <UserRound size={20} />
             <span>Профиль</span>
           </button>
+
+          <button type="button" onClick={onLogout} className="logout-mobile">
+              <LogOut size={20} />
+            <span>Выйти</span>
+          </button>
         </nav>
       </section>
     </div>
