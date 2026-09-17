@@ -261,7 +261,7 @@ function SearchPage({ onDriver }) {
               <input
                 value={city}
                 onChange={(e) => setCity(e.target.value)}
-                placeholder="Новоалтайск"
+                placeholder="Тула"
                 autoComplete="address-level2"
                 autoFocus
               />
@@ -302,7 +302,7 @@ function SearchPage({ onDriver }) {
 
         {!searched && (
           <section className="how-grid">
-            <Info title="1. Введите город" text="Например, Новоалтайск." />
+            <Info title="1. Введите город" text="Например, Тула." />
             <Info
               title="2. Выберите водителя"
               text="В поиске отображаются только свободные."
@@ -538,7 +538,7 @@ function DriverDashboard({ user, onLogout, onBack }) {
                   <input
                     value={form.city}
                     onChange={(e) => setForm({ ...form, city: e.target.value })}
-                    placeholder="Новоалтайск"
+                    placeholder="Тула"
                     required
                   />
                 </Field>
@@ -608,7 +608,7 @@ function DriverDashboard({ user, onLogout, onBack }) {
           </button>
 
           <button type="button" onClick={onLogout} className="logout-mobile">
-              <LogOut size={20} />
+            <LogOut size={20} />
             <span>Выйти</span>
           </button>
         </nav>
