@@ -35,6 +35,103 @@ async function api(path, options = {}) {
   return data;
 }
 
+function PrivacyPage({ onBack }) {
+  return (
+    <div className="privacy-page">
+      <header className="privacy-topbar">
+        <button className="back-link" onClick={onBack}>
+          ← Назад
+        </button>
+        <Logo />
+      </header>
+      <main className="privacy-content">
+        <span className="kicker">Документы</span>
+        <h1>Политика конфиденциальности</h1>
+        <p className="muted">Дата последнего обновления: 17.09.2026</p>
+
+        <h3>1. Общие положения</h3>
+        <p>
+          1.1. Настоящая Политика определяет порядок обработки персональных
+          данных и меры по обеспечению их безопасности, применяемые
+          оператором — самозанятым гражданином, зарегистрированным в
+          соответствии с Федеральным законом № 422-ФЗ (далее — Оператор).
+        </p>
+        <p>
+          1.2. Оператор: самозанятый. Контактный e-mail:{" "}
+          <a href="mailto:ArtTeam71@yandex.ru">ArtTeam71@yandex.ru</a>.
+          Регион деятельности: Тульская область.
+        </p>
+        <p>
+          1.3. Политика разработана в соответствии с Федеральным законом
+          от 27.07.2006 № 152-ФЗ «О персональных данных».
+        </p>
+
+        <h3>2. Категории обрабатываемых данных</h3>
+        <p>2.1. Оператор обрабатывает следующие персональные данные
+          пользователей-водителей: имя; номер телефона; город / населённый
+          пункт; сведения об автомобиле (марка, модель, государственный номер).
+        </p>
+        <p>
+          2.2. Для пользователей-клиентов (поиск такси) персональные данные не
+          собираются. Обрабатываются только технические данные (IP-адрес,
+          время запроса) в логах сервера.
+        </p>
+
+        <h3>3. Цели обработки</h3>
+        <p>3.1. Данные водителей обрабатываются исключительно для:
+          предоставления возможности клиентам найти свободного водителя;
+          отображения контактной информации водителя в результатах поиска;
+          связи клиента с водителем.
+        </p>
+        <p>
+          3.2. Данные не используются для рекламных рассылок, маркетинга или
+          передачи третьим лицам в иных целях.
+        </p>
+
+        <h3>4. Правовые основания</h3>
+        <p>4.1. Обработка осуществляется на основании: согласия субъекта
+          (водителя), выраженного при регистрации; необходимости исполнения
+          договора, стороной которого является субъект (п. 5 ч. 1 ст. 6 152-ФЗ).
+        </p>
+
+        <h3>5. Порядок и сроки обработки</h3>
+        <p>5.1. Обработка включает: сбор, запись, хранение, использование,
+          отображение в поиске.
+        </p>
+        <p>
+          5.2. Данные хранятся до отзыва согласия субъектом или до удаления
+          аккаунта. После этого данные удаляются в течение 30 дней.
+        </p>
+
+        <h3>6. Права субъекта</h3>
+        <p>6.1. Субъект вправе: запросить информацию об обработке своих
+          данных; потребовать уточнения, блокирования или удаления данных;
+          отозвать согласие, направив запрос на{" "}
+          <a href="mailto:ArtTeam71@yandex.ru">ArtTeam71@yandex.ru</a>.
+        </p>
+        <p>6.2. Запрос обрабатывается в течение 30 дней.</p>
+
+        <h3>7. Меры безопасности</h3>
+        <p>7.1. Оператор принимает необходимые правовые, организационные и
+          технические меры для защиты данных от неправомерного доступа:
+          передача данных по HTTPS; хранение в защищённой базе данных;
+          ограничение доступа к серверной инфраструктуре.
+        </p>
+
+        <h3>8. Заключительные положения</h3>
+        <p>8.1. Оператор вправе вносить изменения в настоящую Политику.
+          Актуальная версия всегда доступна по адресу{" "}
+          <a href="/privacy">/privacy</a>.
+        </p>
+        <p>
+          8.2. Контакт для обращений:{" "}
+          <a href="mailto:ArtTeam71@yandex.ru">ArtTeam71@yandex.ru</a>.
+        </p>
+      </main>
+    </div>
+  );
+}
+
 function Logo() {
   return (
     <div className="logo">
@@ -52,6 +149,8 @@ function Auth({ onDone, onBack }) {
   const [phone, setPhone] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [consent, setConsent] = useState(false);
+  const [showPrivacy, setShowPrivacy] = useState(false);
 
   async function submit(e) {
     e.preventDefault();
@@ -173,7 +272,29 @@ function Auth({ onDone, onBack }) {
                 {error}
               </div>
             )}
-            <button className="btn primary wide" disabled={loading}>
+            {mode === "register" && (
+              <label className="consent">
+                <input
+                  type="checkbox"
+                  checked={consent}
+                  onChange={(e) => setConsent(e.target.checked)}
+                />
+                <span>
+                  Я согласен на обработку персональных данных и принимаю{" "}
+                  <button
+                    type="button"
+                    className="link-inline"
+                    onClick={() => setShowPrivacy(true)}
+                  >
+                    Политику конфиденциальности
+                  </button>
+                </span>
+              </label>
+            )}
+            <button
+              className="btn primary wide"
+              disabled={loading || (mode === "register" && !consent)}
+            >
               {loading
                 ? "Подождите…"
                 : mode === "login"
@@ -193,6 +314,13 @@ function Auth({ onDone, onBack }) {
           </button>
         </div>
       </section>
+      {showPrivacy && (
+        <div className="modal-overlay" onClick={() => setShowPrivacy(false)}>
+          <div className="modal" onClick={(e) => e.stopPropagation()}>
+            <PrivacyPage onBack={() => setShowPrivacy(false)} />
+          </div>
+        </div>
+      )}
     </main>
   );
 }
@@ -637,7 +765,9 @@ function App() {
     setUser(null);
     setView("search");
   }
-
+  if (window.location.pathname === "/privacy") {
+    return <PrivacyPage onBack={() => (window.location.href = "/")} />;
+  }
   if (view === "auth")
     return (
       <Auth
