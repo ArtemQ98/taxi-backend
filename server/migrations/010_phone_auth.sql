@@ -1,0 +1,12 @@
+CREATE TABLE IF NOT EXISTS auth_codes (
+ id BIGSERIAL PRIMARY KEY,
+ phone TEXT NOT NULL,
+ code_hash TEXT NOT NULL,
+ expires_at TIMESTAMPTZ NOT NULL,
+ used_at TIMESTAMPTZ,
+ created_at TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+CREATE INDEX IF NOT EXISTS auth_codes_phone_idx ON auth_codes(phone);
+ALTER TABLE users ADD COLUMN IF NOT EXISTS phone_verified BOOLEAN NOT NULL DEFAULT false;
+ALTER TABLE users ALTER COLUMN email DROP NOT NULL;
+ALTER TABLE users ALTER COLUMN password_hash DROP NOT NULL;

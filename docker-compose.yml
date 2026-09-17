@@ -1,0 +1,34 @@
+services:
+  db:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_DB: key
+      POSTGRES_USER: key
+      POSTGRES_PASSWORD: key
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./server/migrations:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD-SHELL","pg_isready -U key -d key"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+  api:
+    build: ./server
+    volumes:
+      - uploads_data:/app/uploads
+    environment:
+      DATABASE_URL: postgres://key:key@db:5432/key?sslmode=disable
+      JWT_SECRET: change-this-before-production
+      CORS_ORIGIN: http://localhost
+    ports: ["8080:8080"]
+    depends_on:
+      db:
+        condition: service_healthy
+  client:
+    build: ./client
+    ports: ["80:80"]
+    depends_on: [api]
+volumes:
+  postgres_data:
+  uploads_data:

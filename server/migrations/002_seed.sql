@@ -1,0 +1,3 @@
+-- KEY: intentionally empty seed migration.
+-- Fresh installations start with no demo users, fleets, cars or rentals.
+-- Real data is created through the application registration and fleet flows.
