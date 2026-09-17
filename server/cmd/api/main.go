@@ -282,15 +282,6 @@ func main() {
 }
 
 func ensureBaseSchema(ctx context.Context, db *pgxpool.Pool) error {
-    // 001_init создаёт users и базовые таблицы. Проверяем по users.
-    var exists bool
-    if err := db.QueryRow(ctx, `SELECT to_regclass('public.users') IS NOT NULL`).Scan(&exists); err != nil {
-        return err
-    }
-    if exists {
-        return nil
-    }
-    // 002_seed пустой; 003_product дублирует хвост 001_init — оба не нужны.
     b, err := os.ReadFile(filepath.Join("/app", "migrations", "001_init.sql"))
     if err != nil {
         return fmt.Errorf("001_init.sql: %w", err)
