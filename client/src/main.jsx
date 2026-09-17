@@ -17,7 +17,7 @@ import {
 } from "lucide-react";
 import "./styles.css";
 
-const API = import.meta.env.DEV ? "http://localhost:8080/api" : "/api";
+const API = import.meta.env.VITE_API_URL || "http://localhost:8080/api";
 
 async function api(path, options = {}) {
   const token = localStorage.getItem("key_token");
